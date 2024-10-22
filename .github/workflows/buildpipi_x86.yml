@@ -36,7 +36,7 @@ jobs:
           ln -s busybox mount
           ln -s busybox umount
           cd ../../
-          echo -e '#!/bin/sh\n\necho "Welcome to pipiLinux"\nexec sh' > iso/init
+          echo -e '#!/bin/sh\n\necho "Welcome to pipiLinux"\nexec /bin/sh' > iso/init
           chmod +x iso/init
 
       - name: Create ISO Image with GRUB
