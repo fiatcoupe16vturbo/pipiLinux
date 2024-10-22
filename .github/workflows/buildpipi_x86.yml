@@ -1,4 +1,4 @@
-name: Build pipiLinux
+name: Build pipiLinux x86
 
 on:
   workflow_dispatch:
