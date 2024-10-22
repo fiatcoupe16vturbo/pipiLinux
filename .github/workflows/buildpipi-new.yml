@@ -1,4 +1,4 @@
-name: Build pipiLinux-busybox
+name: Build pipiLinux
 
 on:
   push:
@@ -11,14 +11,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev genisoimage grub-pc-bin mtools xorriso busybox
 
-      - name: Clone Latest Linux Kernel and Compile
+      - name: Clone Linux Kernel
         run: |
           git clone https://github.com/torvalds/linux.git
           cd linux
@@ -35,6 +35,7 @@ jobs:
           ln -s busybox init
           ln -s busybox mount
           ln -s busybox umount
+          cd ../../
           echo -e '#!/bin/sh\n\necho "Welcome to pipiLinux"\nexec sh' > iso/init
           chmod +x iso/init
 
