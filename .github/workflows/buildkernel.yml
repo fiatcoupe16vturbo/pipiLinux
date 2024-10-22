@@ -1,0 +1,38 @@
+name: Build pipiLinux
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev
+
+      - name: Clone Linux Kernel
+        run: |
+          git clone https://github.com/torvalds/linux.git
+          cd linux
+          make defconfig
+          make -j$(nproc)
+
+      - name: Create ISO Image
+        run: |
+          mkdir -p iso/boot
+          cp linux/arch/x86/boot/bzImage iso/boot/vmlinuz
+          genisoimage -o pipiLinux.iso iso/
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: pipiLinux-ISO
+          path: pipiLinux.iso
