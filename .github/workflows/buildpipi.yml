@@ -11,14 +11,14 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev genisoimage grub-pc-bin
+          sudo apt install -y build-essential libncurses-dev bison flex libssl-dev libelf-dev genisoimage grub-pc-bin mtools xorriso
 
-      - name: Clone Linux Kernel
+      - name: Clone Linux Kernel and Compile
         run: |
           git clone https://github.com/torvalds/linux.git
           cd linux
@@ -37,7 +37,7 @@ jobs:
           grub-mkrescue -o pipiLinux.iso iso/
 
       - name: Upload ISO Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: pipiLinux-ISO
           path: pipiLinux.iso
