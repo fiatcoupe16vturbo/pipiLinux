@@ -25,7 +25,7 @@ jobs:
 
       - name: Create Root Filesystem
         run: |
-          mkdir -p iso/{bin,etc,proc,sys,usr/{bin,lib,sbin,share},var}
+          mkdir -p iso/{bin,etc,proc,sys,dev,usr/{bin,lib,sbin,share},var}
           cp /bin/busybox iso/bin/
           cd iso/bin
           ln -s busybox sh
@@ -34,7 +34,7 @@ jobs:
           ln -s busybox mount
           ln -s busybox umount
           cd ../../
-          echo -e '#!/bin/sh\n\nmount -t proc proc /proc\nmount -t sysfs sys /sys\nmount -t tmpfs tmpfs /tmp\necho "Welcome to pipiLinux"\nexec /bin/sh' > iso/init
+          echo -e '#!/bin/sh\n\nmount -t proc proc /proc\nmount -t sysfs sys /sys\nmount -t devtmpfs dev /dev\nmount -t tmpfs tmpfs /tmp\necho "Welcome to pipiLinux"\nexec /bin/sh' > iso/init
           chmod +x iso/init
 
       - name: Create ISO Image with GRUB
@@ -44,7 +44,7 @@ jobs:
           echo 'set timeout=0' > iso/boot/grub/grub.cfg
           echo 'set default=0' >> iso/boot/grub/grub.cfg
           echo 'menuentry "pipiLinux" {' >> iso/boot/grub/grub.cfg
-          echo '    linux /boot/vmlinuz root=/dev/sr0 rw' >> iso/boot/grub/grub.cfg
+          echo '    linux /boot/vmlinuz root=/dev/ram0 rw init=/init' >> iso/boot/grub/grub.cfg
           echo '}' >> iso/boot/grub/grub.cfg
           grub-mkrescue -o pipiLinux.iso iso/
 
