@@ -23,7 +23,7 @@ jobs:
           make x86_64_defconfig
           make -j$(nproc)
 
-            - name: Create Initramfs
+      - name: Create Initramfs
         run: |
           mkdir -p initramfs/{bin,sbin,etc,proc,sys,dev}
           cp /bin/busybox initramfs/bin/
@@ -37,7 +37,7 @@ jobs:
           chmod +x initramfs/init
           (cd initramfs && find . | cpio -o -H newc | gzip) > initramfs.cpio.gz
 
-            - name: Create ISO Image with GRUB and Initrd
+      - name: Create ISO Image with GRUB and Initrd
         run: |
           mkdir -p iso/boot/grub
           cp linux/arch/x86/boot/bzImage iso/boot/vmlinuz
