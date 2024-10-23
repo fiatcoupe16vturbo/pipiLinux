@@ -1,7 +1,9 @@
-name: Build pipiLinux x64
+name: Build pipiLinux
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   build:
